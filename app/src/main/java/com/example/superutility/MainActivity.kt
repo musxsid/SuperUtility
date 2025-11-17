@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
             SuperUtilityTheme {
                 Surface(color = MaterialTheme.colors.background) {
                     val navController = rememberNavController()
-                    AppNavHost(navController)
+                    AppNavHost(navController = navController)
                 }
             }
         }

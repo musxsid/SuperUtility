@@ -1,15 +1,11 @@
 package com.example.superutility.ui.screens.studyspace
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Stop
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.delay
@@ -20,25 +16,25 @@ fun StudySpaceScreen(navController: NavController) {
     var minutes by remember { mutableStateOf(25) }
     var seconds by remember { mutableStateOf(0) }
     var isRunning by remember { mutableStateOf(false) }
-    var notes by remember { mutableStateOf("") }
-    var dnd by remember { mutableStateOf(false) }
+    var notesText by remember { mutableStateOf("") }
 
     val scope = rememberCoroutineScope()
 
     Scaffold(topBar = { TopAppBar(title = { Text("Study Space") }) }) { padding ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)
-            .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally) {
-
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .padding(20.dp)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             Text("Pomodoro Timer", style = MaterialTheme.typography.h6)
 
-            Text(text = String.format("%02d:%02d", minutes, seconds), style = MaterialTheme.typography.h4, textAlign = TextAlign.Center)
+            Text(String.format("%02d:%02d", minutes, seconds), style = MaterialTheme.typography.h4)
 
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                IconButton(onClick = {
+                Button(onClick = {
                     if (!isRunning) {
                         isRunning = true
                         scope.launch {
@@ -56,27 +52,33 @@ fun StudySpaceScreen(navController: NavController) {
                             isRunning = false
                         }
                     }
-                }) { Icon(Icons.Default.PlayArrow, contentDescription = "Start") }
+                }) { Text("Start") }
 
-                IconButton(onClick = { isRunning = false }) { Icon(Icons.Default.Stop, contentDescription = "Pause") }
+                Button(onClick = { isRunning = false }) { Text("Pause") }
 
-                IconButton(onClick = {
+                Button(onClick = {
                     isRunning = false
-                    minutes = 25; seconds = 0
-                }) { Icon(Icons.Default.Refresh, contentDescription = "Reset") }
+                    minutes = 25
+                    seconds = 0
+                }) { Text("Reset") }
             }
 
             Divider()
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("In-app DND")
-                Spacer(Modifier.width(12.dp))
-                Switch(checked = dnd, onCheckedChange = { dnd = it })
+            Text("Quick Notes (not saved)", style = MaterialTheme.typography.subtitle1)
+            OutlinedTextField(
+                value = notesText,
+                onValueChange = { notesText = it },
+                label = { Text("Write something…") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                shape = RoundedCornerShape(8.dp)
+            )
+
+            Button(onClick = { notesText = "" }, modifier = Modifier.fillMaxWidth()) {
+                Text("Clear Notes")
             }
-
-            OutlinedTextField(value = notes, onValueChange = { notes = it }, label = { Text("Quick notes (not saved)") }, modifier = Modifier.fillMaxWidth().height(120.dp))
-
-            Button(onClick = { notes = "" }, modifier = Modifier.fillMaxWidth()) { Text("Clear Notes") }
         }
     }
 }
