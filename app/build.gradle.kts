@@ -34,19 +34,21 @@ android {
 }
 
 dependencies {
-    implementation("androidx.compose.material:material-icons-extended:1.6.0")
+
+    // Compose BOM (manages versions)
     implementation(platform("androidx.compose:compose-bom:2024.09.00"))
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+
+    // Compose UI
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.material:material")
+    implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.ui:ui-tooling-preview")
     debugImplementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.compose.material:material")
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    // Activity + Navigation
     implementation("androidx.activity:activity-compose:1.9.1")
-    implementation("androidx.compose.ui:ui:1.6.7")
-    implementation("androidx.compose.material:material:1.6.7")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.6.7")
-    implementation("androidx.navigation:navigation-compose:2.7.4")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.7")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
+    // AndroidX Core
+    implementation("androidx.core:core-ktx:1.12.0")
 }
