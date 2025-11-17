@@ -4,12 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.filled.Note
+import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.Calculate
+import androidx.compose.material.icons.filled.Receipt
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +31,7 @@ fun DashboardScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(18.dp),
+            .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
 
@@ -46,58 +51,64 @@ fun DashboardScreen(navController: NavController) {
 
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
 
+            // ----------- ROW 1 -----------
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+
                 DashboardTile(
                     title = "Assignments",
-                    icon = Icons.Default.List,
+                    icon = Icons.AutoMirrored.Filled.List,
                     colors = listOf(Color(0xFFBBDEFB), Color(0xFF90CAF9)),
                     modifier = Modifier.weight(1f)
                 ) { navController.navigate("assignments") }
 
                 DashboardTile(
                     title = "Study Space",
-                    icon = Icons.Default.Timer,
+                    icon = Icons.Filled.Timer,
                     colors = listOf(Color(0xFFFFF9C4), Color(0xFFFFF59D)),
                     modifier = Modifier.weight(1f)
                 ) { navController.navigate("studyspace") }
             }
 
+            // ----------- ROW 2 -----------
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+
                 DashboardTile(
                     title = "Notes",
-                    icon = Icons.Default.Note,
+                    icon = Icons.AutoMirrored.Filled.Note,
                     colors = listOf(Color(0xFFE1BEE7), Color(0xFFD1C4E9)),
                     modifier = Modifier.weight(1f)
                 ) { navController.navigate("notes") }
 
                 DashboardTile(
                     title = "Documents",
-                    icon = Icons.Default.Receipt,
+                    icon = Icons.Filled.Receipt,
                     colors = listOf(Color(0xFFC8E6C9), Color(0xFFA5D6A7)),
                     modifier = Modifier.weight(1f)
                 ) { navController.navigate("documents") }
             }
 
+            // ----------- ROW 3 -----------
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+
                 DashboardTile(
                     title = "Expenses",
-                    icon = Icons.Default.AttachMoney,
+                    icon = Icons.Filled.AttachMoney,
                     colors = listOf(Color(0xFFFFE0B2), Color(0xFFFFCC80)),
                     modifier = Modifier.weight(1f)
                 ) { navController.navigate("expenses") }
 
                 DashboardTile(
                     title = "GPA Calc",
-                    icon = Icons.Default.Calculate,
+                    icon = Icons.Filled.Calculate,
                     colors = listOf(Color(0xFFBBDEFB), Color(0xFF90CAF9)),
                     modifier = Modifier.weight(1f)
                 ) { navController.navigate("gpa") }
@@ -122,6 +133,7 @@ fun DashboardTile(
         shape = RoundedCornerShape(14.dp),
         elevation = 6.dp
     ) {
+
         Box(
             modifier = Modifier
                 .background(Brush.verticalGradient(colors))
@@ -129,11 +141,13 @@ fun DashboardTile(
                 .padding(14.dp),
             contentAlignment = Alignment.CenterStart
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+
                 Icon(icon, contentDescription = title, tint = Color(0xFF0D47A1))
+
                 Spacer(Modifier.width(12.dp))
+
                 Column {
                     Text(title, color = Color(0xFF0D47A1), fontSize = 16.sp)
                     Text("Open", color = Color(0xFF0D47A1).copy(alpha = 0.8f), fontSize = 12.sp)

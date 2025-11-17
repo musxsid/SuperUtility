@@ -3,76 +3,71 @@ package com.example.superutility.ui.screens.assignments
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import kotlin.random.Random
+import com.example.superutility.models.AssignmentUI
+import java.util.*
 
 @Composable
 fun AssignmentsScreen(navController: NavController) {
-    // simple in-memory list (replace with Room later)
+    // in-memory list for demo
     val assignments = remember { mutableStateListOf<AssignmentUI>() }
 
+    // sample seed
+    if (assignments.isEmpty()) {
+        assignments.add(
+            AssignmentUI(
+                id = UUID.randomUUID().toString(),
+                title = "Build UI for SuperUtility",
+                subject = "Mobile",
+                dueInDays = 3,
+                attachedName = null
+            )
+        )
+    }
+
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Assignments") }) },
+        topBar = {
+            TopAppBar(title = { Text("Assignments") })
+        },
         floatingActionButton = {
             FloatingActionButton(onClick = { navController.navigate("add_assignment") }) {
-                Icon(Icons.Default.Add, contentDescription = "Add")
+                Text("+")
             }
         }
     ) { padding ->
         if (assignments.isEmpty()) {
             Box(modifier = Modifier
                 .padding(padding)
-                .fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("No assignments yet.")
+                .fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                Text("No assignments yet. Tap + to add.")
             }
         } else {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(padding)
-                    .padding(16.dp)
-            ) {
-                items(assignments) { item ->
-                    AssignmentCard(
-                        item = item,
-                        onDelete = { assignments.remove(item) }
-                    )
+            LazyColumn(modifier = Modifier.padding(padding).padding(16.dp)) {
+                items(assignments) { a ->
+                    Card(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
+                        Column(modifier = Modifier.padding(12.dp)) {
+                            Text(a.title, style = MaterialTheme.typography.subtitle1)
+                            Spacer(Modifier.height(6.dp))
+                            Text("${a.subject} • Due in ${a.dueInDays} days", style = MaterialTheme.typography.body2)
+                            a.attachedName?.let {
+                                Spacer(Modifier.height(6.dp))
+                                Text("Attachment: $it", style = MaterialTheme.typography.caption)
+                            }
+                            Spacer(Modifier.height(8.dp))
+                            Row {
+                                TextButton(onClick = {
+                                    // TODO later: Edit assignment
+                                }) { Text("Edit") }
+                                Spacer(Modifier.width(8.dp))
+                                TextButton(onClick = { assignments.remove(a) }) { Text("Delete") }
+                            }
+                        }
+                    }
                 }
-            }
-        }
-    }
-}
-
-@Composable
-fun AssignmentCard(item: AssignmentUI, onDelete: () -> Unit) {
-    Card(
-        shape = RoundedCornerShape(12.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        elevation = 4.dp
-    ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(item.title, style = MaterialTheme.typography.subtitle1)
-                Text(item.subject, style = MaterialTheme.typography.body2)
-                Text("Due in ${item.dueInDays} days", style = MaterialTheme.typography.caption)
-            }
-
-            IconButton(onClick = onDelete) {
-                Icon(Icons.Default.Delete, contentDescription = "Delete")
             }
         }
     }

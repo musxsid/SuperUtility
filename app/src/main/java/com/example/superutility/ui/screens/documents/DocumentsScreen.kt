@@ -10,26 +10,15 @@ import androidx.navigation.NavController
 
 @Composable
 fun DocumentsScreen(navController: NavController) {
-    val documentFolders = listOf(
-        "ID Proofs",
-        "Certificates",
-        "College Documents",
-        "Bills & Receipts",
-        "Personal Docs"
-    )
-
+    val folders = listOf("ID Proofs", "Certificates", "College Docs", "Bills", "Personal")
     Scaffold(topBar = { TopAppBar(title = { Text("Documents") }) }) { padding ->
-        Column(modifier = Modifier.padding(padding).padding(16.dp)) {
-            documentFolders.forEach { name ->
-                Card(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-                    .clickable {
-                        // later open folder or local storage picker
-                    },
-                    elevation = 4.dp
-                ) {
-                    Text(text = name, style = MaterialTheme.typography.subtitle1, modifier = Modifier.padding(16.dp))
+        Column(modifier = Modifier.padding(padding).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            folders.forEach { f ->
+                Card(modifier = Modifier.fillMaxWidth().clickable { /* TODO: open folder UI */ }) {
+                    Row(modifier = Modifier.padding(12.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(f, style = MaterialTheme.typography.subtitle1)
+                        Text("Open", style = MaterialTheme.typography.caption)
+                    }
                 }
             }
         }

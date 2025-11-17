@@ -6,53 +6,39 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import kotlin.random.Random
+import java.util.*
 
 @Composable
 fun AddAssignmentScreen(navController: NavController) {
     var title by remember { mutableStateOf("") }
     var subject by remember { mutableStateOf("") }
     var days by remember { mutableStateOf("") }
+    var attachmentName by remember { mutableStateOf<String?>(null) }
 
-    Scaffold(
-        topBar = { TopAppBar(title = { Text("Add Assignment") }) }
-    ) { padding ->
-        Column(modifier = Modifier
-            .padding(padding)
-            .padding(16.dp)) {
+    Scaffold(topBar = { TopAppBar(title = { Text("Add Assignment") }) }) { padding ->
+        Column(modifier = Modifier.padding(padding).padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            OutlinedTextField(value = title, onValueChange = { title = it }, label = { Text("Title") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = subject, onValueChange = { subject = it }, label = { Text("Subject") }, modifier = Modifier.fillMaxWidth())
+            OutlinedTextField(value = days, onValueChange = { days = it }, label = { Text("Due in (days)") }, modifier = Modifier.fillMaxWidth())
 
-            OutlinedTextField(
-                value = title,
-                onValueChange = { title = it },
-                label = { Text("Title") },
-                modifier = Modifier.fillMaxWidth()
-            )
+            // simple fake attach button (UI-only)
+            Button(onClick = { attachmentName = "example_attachment.pdf" }, modifier = Modifier.fillMaxWidth()) {
+                Text(if (attachmentName == null) "Attach file (demo)" else "Attached: $attachmentName")
+            }
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(12.dp))
 
-            OutlinedTextField(
-                value = subject,
-                onValueChange = { subject = it },
-                label = { Text("Subject") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = days,
-                onValueChange = { days = it },
-                label = { Text("Due in (days)") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(Modifier.height(16.dp))
-
-            Button(onClick = {
-                // For now just return (UI-only). Later save to DB
-                navController.popBackStack()
-            }, modifier = Modifier.fillMaxWidth()) {
-                Text("Save")
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(onClick = { navController.popBackStack() }, modifier = Modifier.weight(1f)) {
+                    Text("Cancel")
+                }
+                Button(onClick = {
+                    // For UI-only demo, we just navigate back.
+                    // In real app: save to DB
+                    navController.popBackStack()
+                }, modifier = Modifier.weight(1f)) {
+                    Text("Save")
+                }
             }
         }
     }

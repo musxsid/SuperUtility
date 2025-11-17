@@ -1,26 +1,42 @@
 package com.example.superutility.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
+import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
-private val LightColors = lightColors(
-    primary = androidx.compose.ui.graphics.Color(0xFF0D47A1),
-    primaryVariant = androidx.compose.ui.graphics.Color(0xFF1565C0),
-    secondary = androidx.compose.ui.graphics.Color(0xFF90CAF9)
+private val LightColorPalette = lightColors(
+    primary = Purple500,
+    primaryVariant = Purple700,
+    secondary = Teal200,
+
+    background = BackgroundLight,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
+    onBackground = TextPrimary,
+    onSurface = TextPrimary,
 )
 
-private val DarkColors = darkColors(
-    primary = androidx.compose.ui.graphics.Color(0xFF90CAF9)
+private val DarkColorPalette = darkColors(
+    primary = Purple200,
+    primaryVariant = Purple700,
+    secondary = Teal200
 )
 
 @Composable
-fun SuperUtilityTheme(content: @Composable () -> Unit) {
+fun SuperUtilityTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
+
     MaterialTheme(
-        colors = LightColors,
-        typography = androidx.compose.material.Typography(),
-        shapes = androidx.compose.material.Shapes(),
+        colors = colors,
+        typography = Typography,
+        shapes = Shapes,
         content = content
     )
 }
