@@ -12,6 +12,12 @@ class DocumentsRepository(
     val unsortedDocuments: Flow<List<DocumentEntity>> = dao.getUnsortedDocuments()
     val allFolders: Flow<List<String?>> = dao.getAllFolders()
 
+    // For folder screen compatibility
+    fun getDocumentsByFolder(folderName: String): Flow<List<DocumentEntity>> {
+        return dao.getDocumentsByFolder(folderName)
+    }
+
+    // Old function (still safe to keep)
     fun getDocumentsInFolder(folderName: String?): Flow<List<DocumentEntity>> {
         return dao.getDocumentsByFolder(folderName)
     }

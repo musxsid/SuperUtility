@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.superutility.data.repository.FolderRepository
 import com.example.superutility.data.room.entities.FolderEntity
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -13,29 +14,38 @@ class FolderViewModel(
     private val repository: FolderRepository
 ) : ViewModel() {
 
-    // List of all folders
-    val folders = repository.getAllFolders()
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            emptyList()
-        )
+    // ================================
+    //  LIST OF ALL FOLDERS
+    // ================================
+    val allFolders: StateFlow<List<FolderEntity>> =
+        repository.getAllFolders()
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                emptyList()
+            )
 
-    // Add folder
+    // ================================
+    //  ADD NEW FOLDER
+    // ================================
     fun addFolder(name: String) {
         viewModelScope.launch {
             repository.addFolder(FolderEntity(name = name))
         }
     }
 
-    // Rename folder
+    // ================================
+    //  UPDATE FOLDER (rename)
+    // ================================
     fun updateFolder(folder: FolderEntity) {
         viewModelScope.launch {
             repository.updateFolder(folder)
         }
     }
 
-    // Delete folder
+    // ================================
+    //  DELETE FOLDER
+    // ================================
     fun deleteFolder(folder: FolderEntity) {
         viewModelScope.launch {
             repository.deleteFolder(folder)
@@ -46,6 +56,7 @@ class FolderViewModel(
 class FolderViewModelFactory(
     private val repository: FolderRepository
 ) : ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FolderViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

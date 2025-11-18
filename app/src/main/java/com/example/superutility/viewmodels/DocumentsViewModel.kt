@@ -14,37 +14,33 @@ class DocumentsViewModel(
     private val repository: DocumentsRepository
 ) : ViewModel() {
 
-    val allDocuments: StateFlow<List<DocumentEntity>> = repository.allDocuments
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val allDocuments: StateFlow<List<DocumentEntity>> =
+        repository.allDocuments
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    fun getDocumentsInFolder(folderName: String?) = repository.getDocumentsInFolder(folderName)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val allFolders =
+        repository.allFolders
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    val allFolders = repository.allFolders
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    fun getDocumentsInFolder(folderName: String?) =
+        repository.getDocumentsInFolder(folderName)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun addDocument(fileName: String, filePath: String, folderName: String?, mimeType: String?) {
-        val entity = DocumentEntity(
-            fileName = fileName,
-            folderName = folderName,
-            filePath = filePath,
-            mimeType = mimeType
-        )
         viewModelScope.launch {
-            repository.addDocument(entity)
-        }
-    }
-
-    fun updateDocument(entity: DocumentEntity) {
-        viewModelScope.launch {
-            repository.updateDocument(entity)
+            repository.addDocument(
+                DocumentEntity(
+                    fileName = fileName,
+                    filePath = filePath,
+                    folderName = folderName,
+                    mimeType = mimeType
+                )
+            )
         }
     }
 
     fun deleteDocument(entity: DocumentEntity) {
-        viewModelScope.launch {
-            repository.deleteDocument(entity)
-        }
+        viewModelScope.launch { repository.deleteDocument(entity) }
     }
 }
 
